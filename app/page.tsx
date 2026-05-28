@@ -24,7 +24,7 @@ export default function Home() {
     try {
 
       const response = await fetch(
-        "https://leegaeun.app.n8n.cloud/webhook-test/busan-trip",
+        "https://leegaeun.app.n8n.cloud/webhook/busan-trip",
         {
           method: "POST",
           headers: {
