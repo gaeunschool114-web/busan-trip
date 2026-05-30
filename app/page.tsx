@@ -8,6 +8,7 @@ export default function Home() {
   const [region, setRegion] = useState("");
   const [resultHtml, setResultHtml] = useState("");
   const [email, setEmail] = useState("");
+  const [language, setLanguage] = useState("ko");
 
   const handleSubmit = async () => {
 
@@ -23,10 +24,12 @@ export default function Home() {
 
     try {
 
+      console.log("선택 언어:", language);
       const response = await fetch(
         "https://leegaeun.app.n8n.cloud/webhook/busan-trip",
         {
           method: "POST",
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
           },
@@ -35,6 +38,7 @@ export default function Home() {
             tripType: tripType,
             region: region,
             email: email,
+            language: language,
           }),
         }
       );
@@ -48,9 +52,9 @@ export default function Home() {
 
     } catch (error) {
 
-      console.error(error);
+      console.error("실제 오류:", error);
 
-      alert("오류가 발생했습니다.");
+      alert(String(error));
 
     }
   };
@@ -96,7 +100,7 @@ export default function Home() {
         className="relative h-[550px] bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1526481280695-3c4691f8f5e6?q=80&w=2070&auto=format&fit=crop')",
+            "url('/광안대교.jpg')",
         }}
       >
 
@@ -111,8 +115,7 @@ export default function Home() {
           </h1>
 
           <p className="mt-6 text-xl text-center max-w-2xl leading-relaxed">
-            여행 스타일과 원하는 부산 지역을 입력하면
-            AI가 관광지, 맛집, 쇼핑 장소를 자동 추천한다
+            어디를 가야 할지 고민된다면? 취향에 딱 맞는 부산 여행지를 추천받아보세요!
           </p>
 
         </div>
@@ -132,7 +135,7 @@ export default function Home() {
           {/* 혼자 여행 */}
           <button
             onClick={() => setTripType("혼자")}
-            className={`rounded-3xl overflow-hidden shadow-xl transition duration-300 hover:scale-105 ${
+            className={`rounded-3xl overflow-hidden shadow-xl transition duration-300 hover:scale-105 hover:shadow-2xl ${
               tripType === "혼자"
                 ? "ring-4 ring-blue-500"
                 : ""
@@ -251,7 +254,53 @@ export default function Home() {
           />
 
           </div>
+          <div className="flex justify-center gap-3 mt-4">
 
+            <button
+              onClick={() => setLanguage("ko")}
+              className={`px-4 py-2 rounded-xl transition ${
+                language === "ko"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              한국어
+            </button>
+
+            <button
+              onClick={() => setLanguage("en")}
+              className={`px-4 py-2 rounded-xl transition ${
+                language === "en"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              English
+            </button>
+
+            <button
+              onClick={() => setLanguage("ja")}
+              className={`px-4 py-2 rounded-xl transition ${
+                language === "ja"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              日本語
+            </button>
+
+            <button
+              onClick={() => setLanguage("zh")}
+              className={`px-4 py-2 rounded-xl transition ${
+                language === "zh"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              中文
+            </button>
+
+          </div>
         </div>
 
         {/* 생성 버튼 */}
@@ -259,7 +308,9 @@ export default function Home() {
 
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 hover:bg-blue-700 transition duration-300 text-white text-2xl px-14 py-6 rounded-3xl shadow-2xl"
+            className="bg-gradient-to-r
+            from-sky-500
+            to-blue-700 transition duration-300 text-white text-2xl px-14 py-6 rounded-3xl shadow-2xl"
           >
             AI 부산 여행 추천 생성하기
           </button>
@@ -277,29 +328,6 @@ export default function Home() {
                 __html: resultHtml,
               }}
             />
-
-            <div className="bg-white p-8 rounded-3xl shadow-xl mt-6">
-
-              <h2 className="text-3xl font-bold mb-6">
-                이메일로 여행 가이드 받기
-              </h2>
-
-              <input
-                type="email"
-                placeholder="이메일 입력"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-4 border rounded-xl"
-              />
-
-              <button
-                onClick={sendEmail}
-                className="mt-4 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl"
-              >
-                이메일 받기
-              </button>
-
-            </div>
 
           </div>
 
